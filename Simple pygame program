@@ -1,0 +1,90 @@
+import gooeypie as gp
+import pygame
+
+def game(event):
+    win = pygame.display.set_mode((500, 500))
+
+    x = 100
+    y = 100
+    width = 20
+    height = 20
+    vel = 5
+    speex_x = 5
+    speed_y = 4
+    direction = 1
+
+    #the game loop
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+        keys = pygame.key.get_pressed()
+
+        #set default FPS for game
+        FPS = pygame.time.Clock()
+        FPS.tick(60)
+
+        #using key arrows to move object in window    
+        if keys[pygame.K_LEFT]:
+            x -= vel
+        
+        if keys[pygame.K_RIGHT]:
+            x += vel
+            
+        if keys[pygame.K_UP]:
+            y -= vel
+        
+        if keys[pygame.K_DOWN]:
+            y += vel
+        
+        win.fill((0, 0, 0))
+
+        #drawing objects on the screen/window
+        object1 = pygame.draw.rect(win, (255, 0, 0), (x, y, width, height))
+        object2 = pygame.draw.line(win, (165, 42, 42), (80, 80), (80, 100), width=20)
+        object3 = pygame.draw.line(win, (255, 0, 127), (375, 475), (375, 0), width=20)
+        object4 = pygame.draw.line(win, (255, 255, 255), (120, 390), (120, 410), width=20)
+        object5 = pygame.draw.line(win, (255, 255, 0), (410, 20), (410,35), width=20)
+        object6 = pygame.draw.line(win, (102, 0, 102), (250, 380), (250, 270), width=20)
+        
+        #die when you crash into object
+        if object1.colliderect(object2):
+            run = False
+            
+        if object1.colliderect(object3):
+            run = False
+        
+        if object1.colliderect(object4):
+            run = False
+
+        if object1.colliderect(object5):
+            app.confirm_okcancel('dont touch', 'You completed the game', 'info')
+            run = False
+        
+        if object1.colliderect(object6):
+            run = False
+        
+        #update windows/screen
+        pygame.display.update()
+    pygame.quit()
+
+
+#Gooepie module
+app = gp.GooeyPieApp('')
+
+def app_app():
+    #window/screen width and height
+    app.width = 500
+    app.height = 50
+
+    button1 = hello_btn = gp.Button(app, '                      Click Here To Play \n Move your Object to touch the yellow block to win', game)
+    button2 = hello_lbl = gp.Label(app, '')  
+    print(button1, button2)
+
+    app.set_grid(2, 1)
+    app.add(hello_btn, 1, 1, align='center')
+    app.add(hello_lbl, 2, 1, align='center')
+    
+    app.run()
+app_app()
